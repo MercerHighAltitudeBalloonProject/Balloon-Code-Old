@@ -1,0 +1,4 @@
+TempSensorADT7410	 KEYWORD1
+setSensorConfiguration	 KEYWORD2
+getCelcius		 KEYWORD3
+getFahrenheit		 KEYWORD4
