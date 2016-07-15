@@ -55,25 +55,52 @@ void writeDataToFile()
   String sat = String(satCount);
   storeData += sat;
   Serial.println(storeData);
-  
-  dataFile = SD.open("data.txt", FILE_WRITE);
+
+  writeStringToFile("data.txt", storeData, true);  
+
+}
+
+//Output a strings contents to an SD Card
+void writeStringToFile(String fileName, String data, bool appendTime)
+{
+  //Open the SD Card to the file given
+  dataFile = SD.open(fileName, FILE_WRITE);
   if (dataFile)
   {
-    logTime = RTC.now();
+    //Append the time to the file
+    if(appendTime)
+    {
+      appendTime(dataFile);
+      dataFile.print(",");
+    }
     
-    if (logTime.hour() < 10)
-      dataFile.print("0");    
-    dataFile.print(logTime.hour(), DEC);
-    dataFile.print(":");
-    if (logTime.minute() < 10)
-      dataFile.print("0");
-    dataFile.print(logTime.minute(), DEC);
-    dataFile.print(":");
-    if (logTime.second() < 10)
-      dataFile.print("0");
-    dataFile.print(logTime.second(), DEC);
-    dataFile.print(",");
-    dataFile.println(storeData);
+    //Print the data to the file and close. 
+    dataFile.println(data);
     dataFile.close();
   }
+}
+
+void appendTime(File file)
+{
+     logTime = RTC.now();
+    
+    if (logTime.hour() < 10)
+      file.print("0");    
+    file.print(logTime.hour(), DEC);
+    file.print(":");
+    if (logTime.minute() < 10)
+      file.print("0");
+    file.print(logTime.minute(), DEC);
+    file.print(":");
+    if (logTime.second() < 10)
+      file.print("0");
+    file.print(logTime.second(), DEC); 
+}
+
+void setHeader()
+{
+  dataFile = SD.open("data.txt", FILE_WRITE);
+  dataFile.print("Time, Euler Orient X, Euler Orient Y, Euler Orient Z, Quat Orient X, Quat Orient Y, Quat Orient Z, Linear Accel X, Linear Accel Y, Linear Accel Z, Ang Velocity X, Ang Velocity Y, Ang Velocity Z, Accel X, Accel Y, Accel Z, Gravity X, Gravity Y, Gravity Z, Magnetic X, Magnetic Y, Magnetic Z,"); 
+  dataFile.println("Baro 0 Temp, Baro 1 Temp, Baro 2 Temp, Baro 3 Temp, BNO Temp, DHT Temp Outside, DHT Temp Inside, Baro 0 Pressure, Baro 1 Pressure, Baro 2 Pressure, Baro 3 Pressure, Humidity Outside, Humidity Inside, Altitude, Latitude, Longitude, Velocity, Heading, Sat Count");
+  dataFile.close();
 }

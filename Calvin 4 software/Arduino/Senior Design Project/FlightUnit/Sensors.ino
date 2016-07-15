@@ -1,36 +1,22 @@
 //Obtains I2C data from sensors
 void getI2CData()
 {
-  mux(0);
-  BaroSensor.begin();
-  float baro0Temp = BaroSensor.getTemperature();
-  baro0Temp = convertCToF(baro0Temp);
-  float baro0Press = BaroSensor.getPressure();
-  tempFloats[0] = baro0Temp;
-  pressureFloats[0] = baro0Press;
-  mux(1);
-  BaroSensor.begin();
-  float baro1Temp = BaroSensor.getTemperature();
-  baro1Temp = convertCToF(baro1Temp);
-  float baro1Press = BaroSensor.getPressure();
-  tempFloats[1] = baro1Temp;
-  pressureFloats[1] = baro1Press;
-  tempSend[0] = baro1Temp;
-  mux(2);
-  BaroSensor.begin();
-  float baro2Temp = BaroSensor.getTemperature();
-  baro2Temp = convertCToF(baro2Temp);
-  float baro2Press = BaroSensor.getPressure();
-  tempFloats[2] = baro2Temp;
-  pressureFloats[2] = baro2Press;
-  mux(3);
-  BaroSensor.begin();
-  float baro3Temp = BaroSensor.getTemperature();
-  baro3Temp = convertCToF(baro3Temp);
-  float baro3Press = BaroSensor.getPressure();
-  tempFloats[3] = baro3Temp;
-  pressureFloats[3] = baro3Press;
-
+  for(int i=0; i<=3; i++)
+  {
+    mux(i);
+    BaroSensor.begin();
+    float baroTemp = BaroSensor.getTemperature();
+    baroTemp = convertCToF(baroTemp);
+    float baroPress = BaroSensor.getPressure();
+    tempFloats[i] = baroTemp;
+    pressureFloats[i] = baroPress;  
+    
+    if(i==1)
+    {
+      tempSend[0] = baroTemp;
+    }
+  }
+  
   if(bnoIsOK)
   {
     /*

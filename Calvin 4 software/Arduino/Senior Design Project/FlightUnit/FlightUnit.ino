@@ -167,6 +167,8 @@ void loop(void)
   sendDataToGround();
   sendData = "";
   storeData = "";
+  Serial.println("Transmitted");
+  
   
   currentTime = RTC.now();
   if (currentTime.hour() - startTime.hour() == 3)
