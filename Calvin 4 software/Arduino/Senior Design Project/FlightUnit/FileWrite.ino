@@ -1,30 +1,38 @@
 void writeDataToFile()
 {
-  //Appending accelerometer data
+  String storeage = getStorageString();
+  Serial.println(storeage);
+  writeStringToFile("data.txt", storeData, true);  
+}
+
+String getStorageString()
+{
+  String storageString = "";
+    //Appending accelerometer data
   for (int i = 0; i < sizeof(accelFloats)/sizeof(float); i++)
   {
-    char buff[10];
+    char buff[10+1];
     float val = accelFloats[i];
     String appendage = dtostrf(val, 7, 2, buff);
-    storeData += appendage + ",";
+    storageString += appendage + ",";
   }
-   
+ 
   //Appending temperature data
     for (int i = 0; i < sizeof(tempFloats)/sizeof(float); i++)
   {
-    char buff[6];
+    char buff[6+1];
     float val = tempFloats[i];
-    String appendage = dtostrf(val, 6, 2, buff);
-    storeData += appendage + ",";
-  }  
+    String appendage = dtostrf(val, 7, 2, buff);
+    storageString += appendage + ",";
+  }
   
   //Appending pressure data
   for (int i = 0; i < sizeof(pressureFloats)/sizeof(float); i++)
   {
-    char buff[7];
+    char buff[7+1];
     float val = pressureFloats[i];
-    String appendage = dtostrf(val, 7, 2, buff);
-    storeData += appendage + ",";
+    String appendage = dtostrf(val, 8, 2, buff);
+    storageString += appendage + ",";
   }
   
   //Appending humidity data
@@ -33,42 +41,45 @@ void writeDataToFile()
     char buff[5];
     float val = humidityFloats[i];
     String appendage = dtostrf(val, 5, 2, buff);
-    storeData += appendage + ",";
+    storageString += appendage + ",";
   }
   
   //Appending GPS information
   char buff[20];
   String appendage = dtostrf(alti, 5, 0, buff);
-  storeData += appendage + ",";
+  storageString += appendage + ",";
+  
   //Coordinates
   appendage = dtostrf(latitude, 15, 7, buff);
-  storeData += appendage+ ",";
+  storageString += appendage+ ",";
+  
   appendage = dtostrf(longitude, 15, 7, buff);
-  storeData += appendage + ",";
+  storageString += appendage + ",";
+ 
   //Velocity
   appendage = dtostrf(velocity, 8, 3, buff);
-  storeData += appendage + ",";
+  storageString += appendage + ",";
+  
   //Heading
   appendage = dtostrf(heading, 5, 1, buff);
-  storeData += appendage + ",";
+  storageString += appendage + ",";
+  
   //Satellite count
-  String sat = String(satCount);
-  storeData += sat;
-  Serial.println(storeData);
-
-  writeStringToFile("data.txt", storeData, true);  
-
+  String sat = dtostrf(satCount, 2, 0, buff);
+  storageString += sat;
+  
+  return storageString;
 }
 
 //Output a strings contents to an SD Card
-void writeStringToFile(String fileName, String data, bool appendTime)
+void writeStringToFile(String fileName, String data, bool appendTimeBool)
 {
   //Open the SD Card to the file given
-  dataFile = SD.open(fileName, FILE_WRITE);
+  dataFile = SD.open(fileName.c_str(), FILE_WRITE);
   if (dataFile)
   {
     //Append the time to the file
-    if(appendTime)
+    if(appendTimeBool)
     {
       appendTime(dataFile);
       dataFile.print(",");

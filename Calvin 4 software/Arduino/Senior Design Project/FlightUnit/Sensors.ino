@@ -99,6 +99,10 @@ void getI2CData()
   }
 }
 
+
+
+
+
 //set to selected channel
 void mux(byte channel)
 {
