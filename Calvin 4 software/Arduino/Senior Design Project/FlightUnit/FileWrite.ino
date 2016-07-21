@@ -1,10 +1,3 @@
-void writeDataToFile()
-{
-  String storeage = getStorageString();
-  Serial.println(storeage);
-  writeStringToFile("data.txt", storeData, true);  
-}
-
 String getStorageString()
 {
   String storageString = "";

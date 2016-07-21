@@ -65,7 +65,7 @@ float pressureFloats[4];
 float humidityFloats[2];
 String storeData;
 
-int deviceAddresses[] = {1, 2, 3, 4, 5};
+int deviceAddresses[] = {1, 2, 3, 8};
 
 /**************************************************************************/
 /*
@@ -159,7 +159,10 @@ void loop(void)
       getI2CData();
       obtainHumidityInfo();
       obtainGPSInfo();
-      writeDataToFile();
+      String storeage = getStorageString();
+      Serial.println(storeage);
+      writeStringToFile("data.txt", storeData, true);  
+      sendMessageToAll(storeage);
       storeData = "";
     }
   }

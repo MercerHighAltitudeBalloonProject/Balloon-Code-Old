@@ -17,12 +17,13 @@ void loop() {
 // function that executes whenever data is received from master
 // this function is registered as an event, see setup()
 void receiveEvent(int howMany) {
-  while (1 < Wire.available()) { // loop through all but the last
+  while (0 < Wire.available()) { // loop through all but the last
+    Serial.println("\n----------");
+    Serial.println(Wire.available());
     char c = Wire.read(); // receive byte as a character
-    Serial.print(c);         // print the character
+    Serial.print(int(c));         // print the character
   }
-  x = Wire.read();    // receive byte as an integer
-  Serial.println(x);         // print the integer
+  Serial.println("."); 
 }
 
 // function that executes whenever data is requested by master
