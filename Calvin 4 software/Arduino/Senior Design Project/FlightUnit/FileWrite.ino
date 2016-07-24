@@ -7,6 +7,7 @@ String getStorageString()
     char buff[10+1];
     float val = accelFloats[i];
     String appendage = dtostrf(val, 7, 2, buff);
+    appendage.trim();
     storageString += appendage + ",";
   }
  
@@ -16,6 +17,7 @@ String getStorageString()
     char buff[6+1];
     float val = tempFloats[i];
     String appendage = dtostrf(val, 7, 2, buff);
+    appendage.trim();
     storageString += appendage + ",";
   }
   
@@ -25,6 +27,7 @@ String getStorageString()
     char buff[7+1];
     float val = pressureFloats[i];
     String appendage = dtostrf(val, 8, 2, buff);
+    appendage.trim();
     storageString += appendage + ",";
   }
   
@@ -34,31 +37,38 @@ String getStorageString()
     char buff[5];
     float val = humidityFloats[i];
     String appendage = dtostrf(val, 5, 2, buff);
+    appendage.trim();
     storageString += appendage + ",";
   }
   
   //Appending GPS information
   char buff[20];
   String appendage = dtostrf(alti, 5, 0, buff);
+  appendage.trim();
   storageString += appendage + ",";
   
   //Coordinates
   appendage = dtostrf(latitude, 15, 7, buff);
+  appendage.trim();
   storageString += appendage+ ",";
   
   appendage = dtostrf(longitude, 15, 7, buff);
+  appendage.trim();
   storageString += appendage + ",";
  
   //Velocity
   appendage = dtostrf(velocity, 8, 3, buff);
+  appendage.trim();
   storageString += appendage + ",";
   
   //Heading
   appendage = dtostrf(heading, 5, 1, buff);
+  appendage.trim();
   storageString += appendage + ",";
   
   //Satellite count
   String sat = dtostrf(satCount, 2, 0, buff);
+  sat.trim();
   storageString += sat;
   
   return storageString;
