@@ -65,7 +65,7 @@ float pressureFloats[4];
 float humidityFloats[2];
 String storeData;
 
-int deviceAddresses[] = {7, 8};
+int deviceAddresses[] = {0, 2, 7};
 
 /**************************************************************************/
 /*
@@ -164,6 +164,7 @@ void loop(void)
       writeStringToFile("data.txt", storeData, true);  
       sendMessageToAll(storeage);
       storeData = "";
+      receiveMessageFromAll();
     }
   }
   sensors_event_t event;

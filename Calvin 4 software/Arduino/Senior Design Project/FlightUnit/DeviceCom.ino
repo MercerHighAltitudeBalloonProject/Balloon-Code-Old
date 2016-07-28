@@ -1,26 +1,51 @@
+//Sends a message to each of the addresses in (deviceAddresses)
+//The message is broken up into 32byte blocks with a terminator of #
 void sendMessageToAll(String message){
   for (int indexAddr = 0; indexAddr < sizeof(deviceAddresses)/sizeof(deviceAddresses[0]); indexAddr++) 
   {
      int currentAddr = deviceAddresses[indexAddr];
      
-     String trimmed = "#" + message;
+     String terminatedMessage = message + "#";
      //trimmed.replace(" ","");
      //trimmed.trim();
-     for(int x=0; x<trimmed.length();x=x+32)
+     for(int x=0; x<terminatedMessage.length();x=x+32)
      {
-       
+       //Ensure there is 32 bytes left, else get the correct end. 
        int endIndex = x+32;
-       if(endIndex>trimmed.length())
+       if(endIndex>terminatedMessage.length())
        {
-         endIndex = trimmed.length();
+         endIndex = terminatedMessage.length();
        }
        
-       
+       //Transmit the 32byte fragment
        Wire.beginTransmission(currentAddr);
        Serial.print("ADDR: " + String(currentAddr) + " ");
-       Serial.println(trimmed.substring(x,endIndex));
-       Wire.write(trimmed.substring(x,endIndex).c_str());
+       Serial.println(terminatedMessage.substring(x,endIndex));
+       Wire.write(terminatedMessage.substring(x,endIndex).c_str());
        Wire.endTransmission();
      }
   }
 }
+
+void receiveMessageFromAll()
+{
+  Serial.println("----Receive-----");
+  for (int indexAddr = 0; indexAddr < sizeof(deviceAddresses)/sizeof(deviceAddresses[0]); indexAddr++) 
+  {
+    int currentAddr = deviceAddresses[indexAddr];
+    Serial.print("Address:");
+    Serial.print(currentAddr);
+    Serial.print(" - ");
+    
+    Wire.requestFrom(currentAddr, 14);    // request 6 bytes from slave device #8
+    
+    while (Wire.available()) { // slave may send less than requested
+      char c = Wire.read(); // receive a byte as character
+      Serial.print(c);         // print the character
+    }
+    Serial.println(".");
+    delay(10);
+  }
+  
+}
+
