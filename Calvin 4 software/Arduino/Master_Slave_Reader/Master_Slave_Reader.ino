@@ -73,6 +73,6 @@ void receivedMessage()
 // this function is registered as an event, see setup()
 void requestEvent() 
 {
-  Wire.write("I am address 2");
-  //Serial.println("Sending Message");
+  Wire.write("kI am address 2");
+  Serial.println("Sending Message");
 }

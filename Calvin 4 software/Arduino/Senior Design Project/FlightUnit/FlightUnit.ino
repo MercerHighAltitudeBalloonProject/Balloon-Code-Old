@@ -64,6 +64,7 @@ float tempFloats[7];
 float pressureFloats[4];
 float humidityFloats[2];
 String storeData;
+String receiveData;
 
 int deviceAddresses[] = {0, 2, 7};
 

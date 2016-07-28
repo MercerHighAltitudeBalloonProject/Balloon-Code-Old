@@ -29,6 +29,7 @@ void sendMessageToAll(String message){
 
 void receiveMessageFromAll()
 {
+  int command = -1;
   Serial.println("----Receive-----");
   for (int indexAddr = 0; indexAddr < sizeof(deviceAddresses)/sizeof(deviceAddresses[0]); indexAddr++) 
   {
@@ -37,14 +38,30 @@ void receiveMessageFromAll()
     Serial.print(currentAddr);
     Serial.print(" - ");
     
-    Wire.requestFrom(currentAddr, 14);    // request 6 bytes from slave device #8
+    Wire.requestFrom(currentAddr, 15);    // request 6 bytes from slave device #8
     
     while (Wire.available()) { // slave may send less than requested
       char c = Wire.read(); // receive a byte as character
-      Serial.print(c);         // print the character
+      if(command== -1)
+      {
+        if(c == 'k'){
+          command = 1;
+        }
+        else if(c == 's'){
+          command = 2;
+        }
+        continue;
+      }
+      receiveData += c;
+      //Serial.print(c);         // print the character
     }
-    Serial.println(".");
-    delay(10);
+    Serial.println(receiveData);
+    if(command == 1){
+      String thisFile = String(currentAddr) + ".txt";
+      Serial.println(thisFile);
+      writeStringToFile(thisFile,receiveData,true);
+    }
+    receiveData = "";
   }
   
 }
