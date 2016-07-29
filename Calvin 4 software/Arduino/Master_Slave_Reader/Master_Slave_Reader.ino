@@ -9,7 +9,7 @@ int currentValue = 0;
 void setup() {
   Serial.begin(9600);
   lastReceived = "";
-  Wire.begin(2);                // join i2c bus with address #8
+  Wire.begin(7);                // join i2c bus with address #8
   Wire.onReceive(receiveEvent); // register event
   Wire.onRequest(requestEvent); // register event
   Serial.println("Setup Complete");
@@ -73,6 +73,6 @@ void receivedMessage()
 // this function is registered as an event, see setup()
 void requestEvent() 
 {
-  Wire.write("kI am address 2");
+  Wire.write("kI am address 7");
   Serial.println("Sending Message");
 }

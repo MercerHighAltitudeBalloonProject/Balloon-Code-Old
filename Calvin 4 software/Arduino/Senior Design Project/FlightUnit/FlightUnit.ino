@@ -66,7 +66,7 @@ float humidityFloats[2];
 String storeData;
 String receiveData;
 
-int deviceAddresses[] = {0, 2, 7};
+int deviceAddresses[] = {2, 7};
 
 /**************************************************************************/
 /*
@@ -163,9 +163,10 @@ void loop(void)
       String storeage = getStorageString();
       Serial.println(storeage);
       writeStringToFile("data.txt", storeData, true);  
+      receiveMessageFromAll();
       sendMessageToAll(storeage);
       storeData = "";
-      receiveMessageFromAll();
+      
     }
   }
   sensors_event_t event;

@@ -5,7 +5,7 @@ void sendMessageToAll(String message){
   {
      int currentAddr = deviceAddresses[indexAddr];
      
-     String terminatedMessage = message + "#";
+     String terminatedMessage = message + ",#";
      //trimmed.replace(" ","");
      //trimmed.trim();
      for(int x=0; x<terminatedMessage.length();x=x+32)
@@ -42,6 +42,7 @@ void receiveMessageFromAll()
     
     while (Wire.available()) { // slave may send less than requested
       char c = Wire.read(); // receive a byte as character
+      //Serial.println(c);
       if(command== -1)
       {
         if(c == 'k'){
@@ -61,6 +62,7 @@ void receiveMessageFromAll()
       Serial.println(thisFile);
       writeStringToFile(thisFile,receiveData,true);
     }
+    command = -1;
     receiveData = "";
   }
   
